@@ -20,6 +20,7 @@ class m190126_093938_create_item_table extends Migration
             'buyer_id' => $this->integer(),
             'name' => $this->string()->notNull(),
             'desc' => $this->text(),
+            'start_time' => $this->integer(),
             'start_price' => $this->decimal(10,2)->notNull(),
             'end_price' => $this->decimal(10,2)->notNull(),
             'sell_price' => $this->decimal(10,2),

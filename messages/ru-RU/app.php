@@ -34,6 +34,7 @@ return [
     'Step Price' => 'Шаг по цене',
     'Step Time' => 'Шаг по времени',
     'Status' => 'Статус',
+    'Start Sell' => 'Начало продажи',
 
     'Status Draft' => 'Черновик',
     'Status Template' => 'Шаблон',

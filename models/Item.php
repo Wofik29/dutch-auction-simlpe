@@ -71,6 +71,7 @@ class Item extends \yii\db\ActiveRecord
             'buyer_id' => Yii::t('app', 'Buyer'),
             'name' => Yii::t('app', 'Name'),
             'desc' => Yii::t('app', 'Desc'),
+            'start_time' => Yii::t('app', 'Start Time Sell'),
             'start_price' => Yii::t('app', 'Start Price'),
             'end_price' => Yii::t('app', 'End Price'),
             'currentPrice' => Yii::t('app', 'Current Price'),
