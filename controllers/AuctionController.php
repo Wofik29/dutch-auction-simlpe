@@ -77,6 +77,12 @@ class AuctionController extends BaseController
             $this->goBack();
         }
 
+        if ($model->load(\Yii::$app->request->post()) && $model->validate()) {
+            if ($model->save()) {
+                $this->redirect(['/auction/view', 'id' => $model->id]);
+            }
+        }
+
         return $this->render('edit', compact('model'));
     }
 
