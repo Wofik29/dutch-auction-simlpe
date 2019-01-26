@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12">
             <?php if (Yii::$app->user->can('create_item')): ?>
-                <?= \yii\helpers\Html::a('Create', '/auction/create', ['class' => 'btn btn-success']) ?>
+                <?= \yii\helpers\Html::a(Yii::t('app', 'Create'), '/auction/create', ['class' => 'btn btn-success']) ?>
             <?php endif; ?>
         </div>
     </div>
@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'value' => 'seller.username',
                     ],
                     'name',
-                    'current_price',
+                    'currentPrice',
                 ],
             ])
             ?>

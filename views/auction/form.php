@@ -10,8 +10,6 @@
  * @var $model \app\models\Item
  */
 
-var_dump($model->getErrors());
-
 ?>
 
 <?php $form = \yii\widgets\ActiveForm::begin() ?>

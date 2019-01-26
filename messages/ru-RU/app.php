@@ -8,6 +8,9 @@ return [
     'Please fill out the following fields to login' => 'Пожалуйста заполните поля для авторизации',
 
     'Select...' => 'Выбор...',
+    'Create' => 'Создать',
+    'Edit' => 'Редактировать',
+    'Save' => 'Сохранить',
 
     'Profile' => 'Профиль',
     'Username' => 'Логин',
