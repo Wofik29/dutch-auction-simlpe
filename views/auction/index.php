@@ -9,6 +9,7 @@
 /**
  * @var $this \yii\web\View
  * @var $dataProvider \yii\data\ActiveDataProvider
+ * @var $searchModel \app\models\ItemSearch
  */
 
 $this->title = Yii::t('app', 'Auction');
@@ -30,13 +31,19 @@ $this->params['breadcrumbs'][] = $this->title;
             <?=
             \yii\grid\GridView::widget([
                 'dataProvider' => $dataProvider,
+                'filterModel' => $searchModel,
                 'columns' => [
                     [
                         'attribute' => 'seller_id',
                         'value' => 'seller.username',
+                        'filter' => \yii\helpers\ArrayHelper::map(\app\models\User::getSellers(), 'id', 'username'),
                     ],
                     'name',
+                    'start_price',
                     'currentPrice',
+                    [
+                        'class' => \yii\grid\ActionColumn::class,
+                    ],
                 ],
             ])
             ?>

@@ -110,6 +110,18 @@ class User extends ActiveRecord implements IdentityInterface
         return false;
     }
 
+    public static function getSellers()
+    {
+        $ids = Yii::$app->authManager->getUserIdsByRole('seller');
+        return User::findAll($ids);
+    }
+
+    public static function getClients()
+    {
+        $ids = Yii::$app->authManager->getUserIdsByRole('client');
+        return User::findAll($ids);
+    }
+
     /**
      * Validates password
      *

@@ -11,7 +11,10 @@
  */
 
 $this->title = $model->name;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Auction'), 'url' => ['/auction']];
 $this->params['breadcrumbs'][] = $this->title;
+
+$notSet = '<span class="not-set">'.Yii::t('app', 'Not Set').'</span>';
 ?>
 
 <div class="auction-view">
@@ -22,9 +25,15 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <div class="panel-body">
                 <div class="col-md-6">
-                    <dl>
+                    <dl class="dl-horizontal">
                         <dt><?= Yii::t('app', 'Name') ?></dt>
                         <dd><?= \yii\helpers\HtmlPurifier::process($model->name) ?></dd>
+                        <dt><?= Yii::t('app', 'Status') ?></dt>
+                        <dd><?= (\app\models\Item::getStatusLabels()[$model->status]) ?></dd>
+                        <dt><?= Yii::t('app', 'Start Sell') ?></dt>
+                        <dd><?= $model->start_time ? date('H:i:s d-m-Y', $model->start_time) : $notSet ?></dd>
+                    </dl>
+                    <dl>
                         <dt><?= Yii::t('app', 'Desc') ?></dt>
                         <dd><?= \yii\helpers\HtmlPurifier::process($model->desc) ?></dd>
                     </dl>

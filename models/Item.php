@@ -111,6 +111,17 @@ class Item extends \yii\db\ActiveRecord
         return $this->hasOne(User::class, ['id' => 'buyer_id']);
     }
 
+    public static function getStatusLabels()
+    {
+        return [
+            self::STATUS_DRAFT => Yii::t('app', 'Status Draft'),
+            self::STATUS_TEMPLATE => Yii::t('app', 'Status Template'),
+            self::STATUS_SELLING => Yii::t('app', 'Status Selling'),
+            self::STATUS_SOLD => Yii::t('app', 'Status Sold'),
+            self::STATUS_CLOSE => Yii::t('app', 'Status Close'),
+        ];
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
