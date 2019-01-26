@@ -12,10 +12,12 @@ use Yii;
  * @property int $buyer_id
  * @property string $name
  * @property string $desc
+ * @property int $start_time unix timestamp
  * @property string $start_price
  * @property string $end_price
+ * @property string $sell_price
  * @property string $step_price
- * @property int $step_time
+ * @property int $step_time in seconds
  * @property int $status
  *
  * @property User $buyer
@@ -23,7 +25,16 @@ use Yii;
  */
 class Item extends \yii\db\ActiveRecord
 {
-    public $current_price;
+    const STATUS_DRAFT = 1;
+    const STATUS_TEMPLATE = 2;
+    const STATUS_SELLING = 3;
+    const STATUS_SOLD = 4;
+    const STATUS_CLOSE = 5;
+
+    /**
+     * @var string
+     */
+    private $_current_price;
 
     /**
      * {@inheritdoc}
@@ -62,11 +73,33 @@ class Item extends \yii\db\ActiveRecord
             'desc' => Yii::t('app', 'Desc'),
             'start_price' => Yii::t('app', 'Start Price'),
             'end_price' => Yii::t('app', 'End Price'),
+            'current_price' => Yii::t('app', 'Current Price'),
             'sell_price' => Yii::t('app', 'Sell Price'),
             'step_price' => Yii::t('app', 'Step Price'),
             'step_time' => Yii::t('app', 'Step Time'),
             'status' => Yii::t('app', 'Status'),
         ];
+    }
+
+    public function getCurrentPrice()
+    {
+        if ($this->_current_price == false) {
+            switch ($this->status) {
+                case static::STATUS_SOLD:
+                    $this->current_price = $this->end_price;
+                    break;
+                case static::STATUS_SELLING:
+                    $now = time();
+                    $diff = $now - $this->start_time;
+                    $steps = $diff % $this->step_time;
+                    $this->_current_price = $this->start_price - ($steps * $this->step_price);
+                    break;
+                default:
+                    $this->_current_price = 0;
+            }
+        }
+
+        return $this->_current_price;
     }
 
     /**

@@ -25,7 +25,7 @@ class m190126_093938_create_item_table extends Migration
             'sell_price' => $this->decimal(10,2)->notNull(),
             'step_price'  => $this->decimal(10,2)->notNull(),
             'step_time' => $this->integer()->notNull(),
-            'status' => $this->integer()->notNull(),
+            'status' => $this->integer()->defaultValue(1),
         ]);
 
         $this->createIndex('idx-seller-status', self::TABLE_NAME, 'seller_id');
