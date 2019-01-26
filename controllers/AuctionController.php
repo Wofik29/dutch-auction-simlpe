@@ -4,7 +4,7 @@ namespace app\controllers;
 
 use app\components\BaseController;
 use app\models\Item;
-use yii\data\ActiveDataProvider;
+use app\models\ItemSearch;
 use yii\filters\AccessControl;
 use yii\web\NotFoundHttpException;
 
@@ -42,11 +42,13 @@ class AuctionController extends BaseController
 
     public function actionIndex()
     {
-        $dataProvider  = new ActiveDataProvider([
-            'query' => Item::find(),
-        ]);
+        $searchModel = new ItemSearch();
+        $params = \Yii::$app->request->queryParams;
+        $params['status'] = Item::STATUS_SELLING;
 
-        return $this->render('index', compact('dataProvider'));
+        $dataProvider = $searchModel->search($params);
+
+        return $this->render('index', compact('dataProvider', 'searchModel'));
     }
 
     public function actionCreate()
@@ -91,7 +93,7 @@ class AuctionController extends BaseController
         $model = Item::findOne($id);
 
         if (!$model) {
-            throw new NotFoundHttpException(404, \Yii::t('app', 'Not Found Model'));
+            throw new NotFoundHttpException(\Yii::t('app', 'Not Found Model'));
         }
 
         return $this->render('view', compact('model'));
