@@ -19,7 +19,7 @@ class AuctionController extends BaseController
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'actions' => ['index'],
+                        'actions' => ['index', 'view'],
                         'roles' => ['@'],
                         'allow' => true,
                     ], [
@@ -42,6 +42,28 @@ class AuctionController extends BaseController
         ]);
 
         return $this->render('index', compact('dataProvider'));
+    }
+
+    public function actionCreate()
+    {
+        $model = new Item();
+        $model->status = Item::STATUS_DRAFT;
+        $model->seller_id = \Yii::$app->user->getId();
+
+        if ($model->load(\Yii::$app->request->post()) && $model->validate()) {
+            if ($model->save()) {
+                $this->redirect(['/auction/view', 'id' => $model->id]);
+            }
+        }
+
+        return $this->render('create', compact('model'));
+    }
+
+    public function actionView($id)
+    {
+        $model = Item::findOne($id);
+
+        return $this->render('view', compact('model'));
     }
 
 }
