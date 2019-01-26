@@ -7,6 +7,8 @@ return [
     'Registration' => 'Регистрация',
     'Please fill out the following fields to login' => 'Пожалуйста заполните поля для авторизации',
 
+    'Select...' => 'Выбор...',
+
     'Profile' => 'Профиль',
     'Username' => 'Логин',
     'Password' => 'Пароль',
@@ -34,4 +36,9 @@ return [
     'Status Selling' => 'Продажа',
     'Status Sold' => 'Продано',
     'Status Close' => 'Закрыт',
+
+    'Role' => 'Роль',
+    'Role Seller' => 'Продавец',
+    'Role Client' => 'Покупатель',
+    'Role not exist' => 'Такой роли не существует',
 ];

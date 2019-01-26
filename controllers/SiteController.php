@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\components\BaseController;
+use app\models\RegistrForm;
 use Yii;
 use yii\web\Response;
 use app\models\LoginForm;
@@ -24,7 +25,7 @@ class SiteController extends BaseController
         $behaviors['access']['rules'][] = [
             'allow' => true,
             'roles' => ['?'],
-            'actions' => ['login']
+            'actions' => ['login', 'register']
         ];
         $behaviors['access']['rules'][] = [
             'allow' => true,
@@ -76,6 +77,24 @@ class SiteController extends BaseController
         return $this->render('login', [
             'model' => $model,
         ]);
+    }
+
+    public function actionRegister()
+    {
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
+        $model = new RegistrForm();
+        if ($model->load(Yii::$app->request->post()) && $model->run()) {
+            return $this->goHome();
+        }
+
+        $model->password = '';
+        return $this->render('registr', [
+            'model' => $model,
+        ]);
+
     }
 
     /**

@@ -25,6 +25,14 @@ class User extends ActiveRecord implements IdentityInterface
         return 'user';
     }
 
+    public static function getRoles()
+    {
+        return [
+            'seller' => Yii::t('app', 'Role Seller'),
+            'client' => Yii::t('app', 'Role Client'),
+        ];
+    }
+
     /**
      * {@inheritdoc}
      */

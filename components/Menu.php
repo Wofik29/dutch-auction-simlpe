@@ -18,6 +18,7 @@ class Menu extends Component
     {
         if (Yii::$app->user->isGuest) {
             return [
+                ['label' => Yii::t('app', 'Registration'), 'url' => ['/site/register']],
                 ['label' => Yii::t('app', 'Login'), 'url' => ['/site/login']]
             ];
         }
@@ -48,7 +49,7 @@ class Menu extends Component
         $result[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post')
             . Html::submitButton(
-                'Logout (' . Yii::$app->user->identity->username . ')',
+                Yii::t('app', 'Logout') . ' (' . Yii::$app->user->identity->username . ')',
                 ['class' => 'btn btn-link logout']
             )
             . Html::endForm()
