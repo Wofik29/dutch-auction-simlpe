@@ -2,8 +2,16 @@
 
 return [
     'Login' => 'Авторизация',
+    'Enter' => 'Вход',
     'Logout' => 'Выход',
+    'Registration' => 'Регистрация',
+    'Please fill out the following fields to login' => 'Пожалуйста заполните поля для авторизации',
+
     'Profile' => 'Профиль',
+    'Username' => 'Логин',
+    'Password' => 'Пароль',
+    'RememberMe' => 'Запомнить меня',
+
     'Auction' => 'Аукцион',
     'Buy History' => 'История покупок',
     'Sale History' => 'История продаж',
