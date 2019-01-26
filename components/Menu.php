@@ -24,7 +24,6 @@ class Menu extends Component
         }
 
         $result = [
-            ['label' => Yii::t('app', 'Profile'), 'url' => ['/user/profile']],
             ['label' => Yii::t('app', 'Auction'), 'url' => '/auction' ],
 
         ];

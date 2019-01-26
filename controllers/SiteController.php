@@ -39,17 +39,6 @@ class SiteController extends BaseController
                 ],
             ],
         ];
-        $behaviors['access']['rules'][] = [
-            'allow' => true,
-            'roles' => ['?'],
-            'actions' => ['login', 'register']
-        ];
-        $behaviors['access']['rules'][] = [
-            'allow' => true,
-            'actions' => ['error'],
-        ];
-
-        return $behaviors;
     }
 
     /**

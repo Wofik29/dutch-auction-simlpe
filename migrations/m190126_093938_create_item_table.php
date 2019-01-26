@@ -22,7 +22,7 @@ class m190126_093938_create_item_table extends Migration
             'desc' => $this->text(),
             'start_price' => $this->decimal(10,2)->notNull(),
             'end_price' => $this->decimal(10,2)->notNull(),
-            'sell_price' => $this->decimal(10,2)->notNull(),
+            'sell_price' => $this->decimal(10,2),
             'step_price'  => $this->decimal(10,2)->notNull(),
             'step_time' => $this->integer()->notNull(),
             'status' => $this->integer()->defaultValue(1),

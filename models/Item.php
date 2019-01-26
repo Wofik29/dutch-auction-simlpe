@@ -86,7 +86,7 @@ class Item extends \yii\db\ActiveRecord
         if ($this->_current_price == false) {
             switch ($this->status) {
                 case static::STATUS_SOLD:
-                    $this->current_price = $this->end_price;
+                    $this->_current_price = $this->end_price;
                     break;
                 case static::STATUS_SELLING:
                     $now = time();
