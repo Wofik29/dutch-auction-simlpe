@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\components\BaseController;
 use app\models\RegistrForm;
 use Yii;
+use yii\filters\AccessControl;
 use yii\web\Response;
 use app\models\LoginForm;
 use app\models\ContactForm;
@@ -16,11 +17,27 @@ class SiteController extends BaseController
      */
     public function behaviors()
     {
-        $behaviors = parent::behaviors();
-        $behaviors['access']['rules'][] = [
-            'actions' => ['logout'],
-            'allow' => true,
-            'roles' => ['@'],
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'actions' => ['logout', 'index'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ], [
+                        'allow' => true,
+                        'roles' => ['?'],
+                        'actions' => ['login', 'register']
+                    ], [
+                        'allow' => true,
+                        'actions' => ['error'],
+                    ], [
+                        'allow' => false,
+                        'roles' => ['?'],
+                    ]
+                ],
+            ],
         ];
         $behaviors['access']['rules'][] = [
             'allow' => true,

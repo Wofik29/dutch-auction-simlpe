@@ -18,8 +18,8 @@ class BaseController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'allow' => true,
-                        'roles' => ['@'],
+                        'allow' => false,
+                        'roles' => ['?'],
                     ]
                 ],
             ],

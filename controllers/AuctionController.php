@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\components\BaseController;
 use app\models\Item;
 use yii\data\ActiveDataProvider;
+use yii\filters\AccessControl;
 
 class AuctionController extends BaseController
 {
@@ -13,9 +14,25 @@ class AuctionController extends BaseController
      */
     public function behaviors()
     {
-        $behaviors = parent::behaviors();
-
-        return $behaviors;
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'actions' => ['index'],
+                        'roles' => ['@'],
+                        'allow' => true,
+                    ], [
+                        'actions' => ['create'],
+                        'roles' => ['create_item'],
+                        'allow' => true,
+                    ], [
+                        'allow' => false,
+                        'roles' => ['?'],
+                    ]
+                ],
+            ],
+        ];
     }
 
     public function actionIndex()
