@@ -3,6 +3,7 @@ function Auction() {
 
     this.tick = function (timestamp) {
         this.items.forEach(function(item, key, arr) {
+            if (item.is_end) return;
 
             var now = Math.round(Date.now() / 1000);
 
@@ -11,19 +12,21 @@ function Auction() {
                 var steps = Math.round(diff / (item.step_time));
                 item.current_price = Math.round(item.start_price - (steps * item.step_price));
                 item.lastUpdate += item.step_time ;
+                var row = item.priceColumn.closest('tr');
                 if (item.current_price < item.end_price) {
                     item.current_price = item.end_price;
                     item.timerId = null;
+                    item.is_end = true;
+                    item.priceColumn.html(item.current_price);
+                    row.addClass('price-end');
+                } else {
+                    item.priceColumn.html(item.current_price);
+                    row.addClass('price-update');
+
+                    setTimeout(function (row) {
+                        row.removeClass('price-update');
+                    }, 1000, row);
                 }
-
-                item.priceColumn.html(item.current_price);
-                var row = item.priceColumn.closest('tr');
-                row.addClass('price-update');
-
-                setTimeout(function (row) {
-                    row.removeClass('price-update');
-                }, 1000, row);
-
             }
         })
         requestAnimationFrame(this.tick.bind(this));
@@ -40,6 +43,7 @@ function Auction() {
             item.lastUpdate = item.start_time + (steps * item.step_time);
             item.priceColumn = priceColumn;
             item.priceColumn.html(item.current_price);
+            item.is_end = false;
         };
 
         this.items.forEach(setUpdate.bind(this));
