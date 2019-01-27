@@ -37,6 +37,10 @@ $notSet = '<span class="not-set">' . Yii::t('app', 'Not Set') . '</span>';
                         <dd><?= (\app\models\Item::getStatusLabels()[$model->status]) ?></dd>
                         <dt><?= Yii::t('app', 'Start Sell') ?></dt>
                         <dd><?= $model->start_time ? date('H:i:s d-m-Y', $model->start_time) : $notSet ?></dd>
+                        <dt><?= Yii::t('app', 'Buyer') ?></dt>
+                        <dd><?= $model->buyer_id ? $model->buyer->username : $notSet ?></dd>
+                        <dt><?= Yii::t('app', 'Sell Price') ?></dt>
+                        <dd><?= $model->sell_price ? $model->sell_price : $notSet ?></dd>
                     </dl>
                     <dl>
                         <dt><?= Yii::t('app', 'Desc') ?></dt>
