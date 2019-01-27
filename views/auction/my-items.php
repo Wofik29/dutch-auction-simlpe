@@ -49,9 +49,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         'class' => \yii\grid\ActionColumn::class,
                         'template' => '{view} {update} {delete} {sell}',
                         'buttons' => [
-                                'sell' => function ($url, $model, $key) {
-                                    return \yii\helpers\Html::a('Sell', '/auction/sell');
-                                }
+                            'sell' => function ($url, $model, $key) {
+                                return \yii\helpers\Html::a(\Yii::t('app', 'Selling'), '/auction/sell');
+                            }
                         ],
                         'visibleButtons' => [
                             'view' => true,

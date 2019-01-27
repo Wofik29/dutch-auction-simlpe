@@ -23,22 +23,25 @@ class Menu extends Component
             ];
         }
 
-        $result = [
-            ['label' => Yii::t('app', 'Auction'), 'url' => '/auction' ],
-
+        $auction = ['label' => Yii::t('app', 'Auction'),
+            'items' => [
+                ['label' => Yii::t('app', 'Selling'), 'url' => '/auction'],
+            ],
         ];
 
+        $result = [];
+
         if (Yii::$app->user->can('create_item')) {
-            $result[] = ['label' => Yii::t('app', 'My Items'), 'url' => '/auction/my-items' ];
+            $auction['items'][] = ['label' => Yii::t('app', 'My Items'), 'url' => '/auction/my-items'];
         }
 
         if (Yii::$app->user->can('buy_item')) {
-            $result[] = ['label' => Yii::t('app', 'Buy History'), 'url' => '/buy' ];
-            $result[] = ['label' => Yii::t('app', 'Favorites Sellers'), 'url' => '/favorites' ];
+            $auction['items'][] = ['label' => Yii::t('app', 'Buy History'), 'url' => '/buy'];
+            $result[] = ['label' => Yii::t('app', 'Favorites Sellers'), 'url' => '/favorites'];
         }
 
         if (Yii::$app->user->can('seller')) {
-            $result[] = ['label' => Yii::t('app', 'Sale History'), 'url' => '/sale' ];
+            $auction['items'][] = ['label' => Yii::t('app', 'Sale History'), 'url' => '/sale'];
         }
 
         if (Yii::$app->user->can('profile_edit_own')) {
@@ -46,8 +49,10 @@ class Menu extends Component
         }
 
         if (Yii::$app->user->can('profile_edit_foreign')) {
-            $result[] = ['label' => Yii::t('app', 'Users'), 'url' => '/user' ];
+            $result[] = ['label' => Yii::t('app', 'Users'), 'url' => '/user'];
         }
+
+        $result[] = $auction;
 
         $result[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post')

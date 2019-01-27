@@ -18,6 +18,7 @@ return [
     'RememberMe' => 'Запомнить меня',
 
     'Auction' => 'Аукцион',
+    'Selling' => 'Продажа',
     'Item' => 'Лот',
     'My Items' => 'Мои Лоты',
     'Buy History' => 'История покупок',
