@@ -61,7 +61,7 @@ class ItemController extends BaseController
         $dataProvider = $searchModel->search($params);
         $type = 'buy';
 
-        return $this->render('history', compact('dataProvider', 'searchModel', 'type'));
+        return $this->render('index', compact('dataProvider', 'searchModel', 'type'));
     }
 
     public function actionBuy()
@@ -85,7 +85,7 @@ class ItemController extends BaseController
         $dataProvider = $searchModel->search($params);
         $type = 'sell';
 
-        return $this->render('index', compact('dataProvider', 'searchModel', 'type'));
+        return $this->render('history', compact('dataProvider', 'searchModel', 'type'));
     }
 
     public function actionView($id)
