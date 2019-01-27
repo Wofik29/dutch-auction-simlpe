@@ -6,7 +6,9 @@ use app\components\BaseController;
 use app\models\Item;
 use app\models\ItemSearch;
 use yii\filters\AccessControl;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 class AuctionController extends BaseController
 {
@@ -143,8 +145,18 @@ class AuctionController extends BaseController
     public function actionSell($id)
     {
         $model = Item::findOne($id);
-        $model->setSelling();
-        return $this->goBack();
+
+        if (!$model) {
+            throw new NotFoundHttpException(\Yii::t('app', 'Not Found Model!'));
+        }
+
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+        if ($model->setSelling()) {
+            \Yii::$app->session->addFlash('success', \Yii::t('app', 'Success change status to Sell!'));
+            return $this->goBack();
+        } else {
+            throw new ForbiddenHttpException($model->getFirstError('status'));
+        }
     }
 
     public function actionBuy($id)
@@ -168,7 +180,19 @@ class AuctionController extends BaseController
     public function actionClose($id)
     {
         $model = Item::findOne($id);
-        $model->close();
-        return $this->goBack();
+
+        if (!$model) {
+            throw new NotFoundHttpException(\Yii::t('app', 'Not Found Model!'));
+        }
+
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+        if ($model->close()) {
+            return [
+                'title' => \Yii::t('app', 'Success'),
+                'body' => '<div class="alert alert-success">'.\Yii::t('app', 'Congrats!').' '.\Yii::t('app', 'Success Close!').'</div>',
+            ];
+        } else {
+            throw new ForbiddenHttpException($model->getFirstError('status'));
+        }
     }
 }

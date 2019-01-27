@@ -83,9 +83,9 @@ class Item extends \yii\db\ActiveRecord
         ];
     }
 
-    public function getCurrentPrice()
+    public function getCurrentPrice($recalc = false)
     {
-        if ($this->_currentPrice == false) {
+        if ($this->_currentPrice == false || $recalc) {
             switch ($this->status) {
                 case static::STATUS_SOLD:
                     $this->_currentPrice = $this->end_price;
@@ -137,20 +137,30 @@ class Item extends \yii\db\ActiveRecord
 
     public function setSelling()
     {
-        $this->status = self::STATUS_SELLING;
-        $this->start_time = time();
+        if ($this->status == self::STATUS_DRAFT) {
+            $this->status = self::STATUS_SELLING;
+            $this->start_time = time();
+            $diffPrice = $this->end_price - $this->start_price;
+            $countStep = round($diffPrice / $this->step_price);
+            $this->end_time = $this->start_time + ($countStep * $this->step_time);
+            $this->save(false);
+            return true;
+        }
 
-        $diffPrice = $this->end_price - $this->start_time;
-        $countStep = $diffPrice % $this->step_price;
-        $this->end_time = $this->start_time + ($countStep * $this->step_time);
-
-        $this->save(false);
+        $this->addError('status', Yii::t('app', 'You can Sell item only in status is draft'));
+        return false;
     }
 
     public function close()
     {
-        $this->status = self::STATUS_CLOSE;
-        $this->save(false);
+        if ($this->status == self::STATUS_SELLING) {
+            $this->status = self::STATUS_CLOSE;
+            $this->save(false);
+            return true;
+        }
+
+        $this->addError('status', Yii::t('app', 'You can close item only in status is sell'));
+        return false;
     }
 
     public function buy()
