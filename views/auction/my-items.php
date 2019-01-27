@@ -87,7 +87,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 return Yii::$app->user->can('seller') && $model['status'] == \app\models\Item::STATUS_DRAFT;
                             },
                             'close' => function ($model, $key, $index) {
-                                return Yii::$app->user->can('drop_item') && Yii::$app->user->can('drop_item_foreign') &&
+                                return (Yii::$app->user->can('drop_item') || Yii::$app->user->can('drop_item_foreign')) &&
                                     $model['status'] == \app\models\Item::STATUS_SELLING;
                             }
                         ]
