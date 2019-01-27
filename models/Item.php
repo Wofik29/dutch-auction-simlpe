@@ -185,7 +185,7 @@ class Item extends \yii\db\ActiveRecord
                 return false;
             }
             $this->status = self::STATUS_SOLD;
-            $this->end_price = $this->getCurrentPrice(true);
+            $this->sell_price = $this->getCurrentPrice(true);
             $this->buyer_id = \Yii::$app->user->getId();
             $this->save(false);
             return true;
