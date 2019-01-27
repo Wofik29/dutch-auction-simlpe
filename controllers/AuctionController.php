@@ -174,7 +174,6 @@ class AuctionController extends BaseController
         $endTime = time() + $delay;
 
         $ids = \Yii::$app->request->get('ids', []);
-        $toRemove = $ids;
 
         /**
          * Because request lock session file,
@@ -183,12 +182,13 @@ class AuctionController extends BaseController
         \Yii::$app->session->close();
         while ($endTime > time()) {
             $results = [];
+            $toRemove = $ids;
 
             /** @var Item[] $models */
             $models = Item::findAll(['status' => Item::STATUS_SELLING]);
             foreach ($models as $model) {
                 if (in_array($model->id, $ids)) {
-                    $keys = array_keys($toRemove);
+                    $keys = array_flip($toRemove);
                     unset($toRemove[$keys[$model->id]]);
 
                     /**

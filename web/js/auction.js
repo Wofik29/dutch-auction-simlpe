@@ -66,7 +66,7 @@ function Auction() {
                                 }
                                 if (delete_key) {
                                     auction.items.splice(delete_key, 1);
-                                    key = auction.ids.indexOf(item.id);
+                                    key = auction.ids.indexOf(Number(item.id));
                                     auction.ids.splice(key, 1);
                                 }
                                 break;
