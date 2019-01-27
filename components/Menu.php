@@ -28,6 +28,10 @@ class Menu extends Component
 
         ];
 
+        if (Yii::$app->user->can('create_item')) {
+            $result[] = ['label' => Yii::t('app', 'My Items'), 'url' => '/auction/my-items' ];
+        }
+
         if (Yii::$app->user->can('buy_item')) {
             $result[] = ['label' => Yii::t('app', 'Buy History'), 'url' => '/buy' ];
             $result[] = ['label' => Yii::t('app', 'Favorites Sellers'), 'url' => '/favorites' ];

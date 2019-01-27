@@ -24,7 +24,17 @@ class AuctionController extends BaseController
                         'roles' => ['@'],
                         'allow' => true,
                     ], [
-                        'actions' => ['create'],
+                        'actions' => ['sell',],
+                        'roles' => ['create_item'],
+                        'allow' => true,
+                        'verbs' => ['POST'],
+                    ], [
+                        'actions' => ['close',],
+                        'roles' => ['create_item', 'edit_item_foreign'],
+                        'allow' => true,
+                        'verbs' => ['POST'],
+                    ], [
+                        'actions' => ['create', 'my-items'],
                         'roles' => ['create_item'],
                         'allow' => true,
                     ], [
@@ -49,6 +59,20 @@ class AuctionController extends BaseController
         $dataProvider = $searchModel->search($params);
 
         return $this->render('index', compact('dataProvider', 'searchModel'));
+    }
+
+    public function actionMyItems()
+    {
+        $searchModel = new ItemSearch();
+        $params = \Yii::$app->request->queryParams;
+        if (\Yii::$app->user->can('edit_item')) {
+            $params['ItemSearch']['seller_id'] = \Yii::$app->user->getId();
+        }
+
+        $dataProvider = $searchModel->search($params);
+
+        return $this->render('my-items', compact('dataProvider', 'searchModel'));
+
     }
 
     public function actionCreate()
@@ -99,4 +123,15 @@ class AuctionController extends BaseController
         return $this->render('view', compact('model'));
     }
 
+    public function actionSell($id)
+    {
+        $model = Item::findOne($id);
+        $model->setSelling();
+        return $this->redirect('/auction');
+    }
+
+    public function actionClose($id)
+    {
+
+    }
 }

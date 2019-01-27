@@ -130,4 +130,16 @@ class Item extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::class, ['id' => 'seller_id']);
     }
+
+    public function setSelling()
+    {
+        $this->status = self::STATUS_SELLING;
+        $this->start_time = time();
+
+        $diffPrice = $this->end_price - $this->start_time;
+        $countStep = $diffPrice % $this->step_price;
+        $this->end_time = $this->start_time + ($countStep * $this->step_time);
+
+        $this->save(false);
+    }
 }

@@ -19,6 +19,7 @@ return [
 
     'Auction' => 'Аукцион',
     'Item' => 'Лот',
+    'My Items' => 'Мои Лоты',
     'Buy History' => 'История покупок',
     'Sale History' => 'История продаж',
     'Users' => 'Пользователи',
