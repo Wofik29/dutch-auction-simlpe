@@ -259,7 +259,11 @@ class AuctionController extends BaseController
             \Yii::$app->session->addFlash('success', \Yii::t('app', 'Success Buy!'));
             return $this->goBack();
         } else {
-            throw new ForbiddenHttpException($model->getFirstError('status'));
+            $error = $model->getFirstError('status');
+            return [
+                'title' => \Yii::t('app', 'Failure'),
+                'content' => '<div class="alert alert-warning">'. $error .'</div>',
+            ];
         }
 
     }
@@ -276,10 +280,14 @@ class AuctionController extends BaseController
         if ($model->close()) {
             return [
                 'title' => \Yii::t('app', 'Success'),
-                'body' => '<div class="alert alert-success">'.\Yii::t('app', 'Congrats!').' '.\Yii::t('app', 'Success Close!').'</div>',
+                'content' => '<div class="alert alert-success">'.\Yii::t('app', 'Congrats!').' '.\Yii::t('app', 'Success Close!').'</div>',
             ];
         } else {
-            throw new ForbiddenHttpException($model->getFirstError('status'));
+            $error = $model->getFirstError('status');
+            return [
+                'title' => \Yii::t('app', 'Failure'),
+                'content' => '<div class="alert alert-warning">'. $error .'</div>',
+            ];
         }
     }
 }
