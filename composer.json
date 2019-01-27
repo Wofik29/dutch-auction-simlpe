@@ -3,6 +3,12 @@
     "description": "Dutch auction site ",
     "type": "project",
     "minimum-stability": "stable",
+    "authors": [
+        {
+            "name": "Volkov Danil",
+            "email": "linad29@mail.ru"
+        }
+    ],
     "require": {
         "php": ">=7.1",
         "yiisoft/yii2": "~2.0.14",
