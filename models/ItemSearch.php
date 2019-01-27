@@ -42,6 +42,7 @@ class ItemSearch extends Item
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
+        $query->orderBy('id desc');
 
         $this->load($params);
 
