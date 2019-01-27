@@ -36,12 +36,11 @@ class Menu extends Component
         }
 
         if (Yii::$app->user->can('buy_item')) {
-            $auction['items'][] = ['label' => Yii::t('app', 'Buy History'), 'url' => '/buy'];
-            $result[] = ['label' => Yii::t('app', 'Favorites Sellers'), 'url' => '/favorites'];
+            $auction['items'][] = ['label' => Yii::t('app', 'Buy History'), 'url' => '/item/buy'];
         }
 
         if (Yii::$app->user->can('seller')) {
-            $auction['items'][] = ['label' => Yii::t('app', 'Sale History'), 'url' => '/sale'];
+            $auction['items'][] = ['label' => Yii::t('app', 'Sale History'), 'url' => '/item/sell'];
         }
 
         if (Yii::$app->user->can('profile_edit_own')) {

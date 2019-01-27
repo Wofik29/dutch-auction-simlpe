@@ -7,10 +7,15 @@
  */
 
 return [
+    $type == 'buy' ?
     [
         'attribute' => 'seller_id',
         'value' => 'seller.username',
         'filter' => \yii\helpers\ArrayHelper::map(\app\models\User::getSellers(), 'id', 'username'),
+    ] : [
+        'attribute' => 'buyer_id',
+        'value' => 'buyer.username',
+        'filter' => \yii\helpers\ArrayHelper::map(\app\models\User::getClients(), 'id', 'username'),
     ],
     'name',
     [

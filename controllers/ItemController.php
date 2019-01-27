@@ -15,7 +15,7 @@ use yii\web\Response;
 use app\models\LoginForm;
 use app\models\ContactForm;
 
-class BuyController extends BaseController
+class ItemController extends BaseController
 {
     /**
      * {@inheritdoc}
@@ -28,8 +28,13 @@ class BuyController extends BaseController
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['index', 'view'],
+                        'actions' => ['buy', 'view'],
                         'roles' => ['client', 'edit_item_their'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['sell', 'view'],
+                        'roles' => ['seller', 'edit_item_their'],
                     ],
                     [
                         'allow' => false,
@@ -43,15 +48,28 @@ class BuyController extends BaseController
     /**
      * @return string
      */
-    public function actionIndex()
+    public function actionBuy()
     {
         $searchModel = new ItemSearch();
         $params = \Yii::$app->request->queryParams;
         $params['ItemSearch']['buyer_id'] = \Yii::$app->user->getId();
 
         $dataProvider = $searchModel->search($params);
+        $type = 'buy';
 
-        return $this->render('history', compact('dataProvider', 'searchModel'));
+        return $this->render('index', compact('dataProvider', 'searchModel', 'type'));
+    }
+
+    public function actionSell()
+    {
+        $searchModel = new ItemSearch();
+        $params = \Yii::$app->request->queryParams;
+        $params['ItemSearch']['seller_id'] = \Yii::$app->user->getId();
+
+        $dataProvider = $searchModel->search($params);
+        $type = 'sell';
+
+        return $this->render('index', compact('dataProvider', 'searchModel', 'type'));
     }
 
     public function actionView($id)
@@ -62,7 +80,10 @@ class BuyController extends BaseController
             throw new NotFoundHttpException(\Yii::t('app', 'Not Found Model'));
         }
 
-        if ($model->buyer_id != \Yii::$app->user->getId()) {
+        $isBuy = $model->buyer_id != \Yii::$app->user->getId();
+        $isSell = $model->seller_id != \Yii::$app->user->getId();
+
+        if ($isBuy xor $isSell) {
             throw new ForbiddenHttpException(\Yii::t('app', 'Forbidden'));
         }
 
