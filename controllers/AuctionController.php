@@ -30,7 +30,7 @@ class AuctionController extends BaseController
                         'verbs' => ['POST'],
                     ], [
                         'actions' => ['close',],
-                        'roles' => ['create_item', 'edit_item_foreign'],
+                        'roles' => ['drop_item_foreign', 'drop_item'],
                         'allow' => true,
                         'verbs' => ['POST'],
                     ], [
@@ -127,11 +127,13 @@ class AuctionController extends BaseController
     {
         $model = Item::findOne($id);
         $model->setSelling();
-        return $this->redirect('/auction');
+        return $this->goBack();
     }
 
     public function actionClose($id)
     {
-
+        $model = Item::findOne($id);
+        $model->close();
+        return $this->goBack();
     }
 }

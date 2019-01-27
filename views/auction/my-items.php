@@ -12,9 +12,13 @@
  * @var $searchModel \app\models\ItemSearch
  */
 
+use yii\bootstrap\Modal;
+
 $this->title = Yii::t('app', 'My Items');
 
 $this->params['breadcrumbs'][] = $this->title;
+
+\app\assets\ModalRemoteAsset::register($this);
 ?>
 
 <div class="auction-index">
@@ -47,10 +51,28 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                     [
                         'class' => \yii\grid\ActionColumn::class,
-                        'template' => '{view} {update} {delete} {sell}',
+                        'template' => '{view} {update} {delete} {sell} {close}',
                         'buttons' => [
                             'sell' => function ($url, $model, $key) {
-                                return \yii\helpers\Html::a(\Yii::t('app', 'Selling'), '/auction/sell');
+                                return \yii\helpers\Html::a(\Yii::t('app', 'Selling'), [
+                                    '/auction/sell', 'id' => $model['id'],
+                                ], [
+                                    'data-confirm' => false,
+                                    'data-method' => false,
+                                    'role' => 'modal-remote',
+                                    'data-request-method' => 'POST',
+                                    'data-toggle' => 'tooltip',
+                                ]);
+                            },
+                            'close' => function ($url, $model, $key) {
+                                return \yii\helpers\Html::a(\Yii::t('app', 'Close'), [
+                                    '/auction/close', 'id' => $model['id'],
+                                ], [
+                                    'data-method' => false,
+                                    'role' => 'modal-remote',
+                                    'data-request-method' => 'POST',
+                                    'data-toggle' => 'tooltip',
+                                ]);
                             }
                         ],
                         'visibleButtons' => [
@@ -63,6 +85,10 @@ $this->params['breadcrumbs'][] = $this->title;
                             },
                             'sell' => function ($model, $key, $index) {
                                 return Yii::$app->user->can('seller') && $model['status'] == \app\models\Item::STATUS_DRAFT;
+                            },
+                            'close' => function ($model, $key, $index) {
+                                return Yii::$app->user->can('drop_item') && Yii::$app->user->can('drop_item_foreign') &&
+                                    $model['status'] == \app\models\Item::STATUS_SELLING;
                             }
                         ]
                     ],
@@ -72,3 +98,10 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 </div>
+<?php Modal::begin([
+    "id" => "ajaxCrudModal",
+    "footer" => "",// always need it for jquery plugin
+]) ?>
+<?php Modal::end(); ?>
+
+

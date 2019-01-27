@@ -5,16 +5,21 @@
  * Date: 26.01.19
  * Time: 20:19
  */
+
 /**
  * @var $this \yii\web\View
  * @var $model \app\models\Item
  */
 
+use yii\bootstrap\Modal;
+
+\app\assets\ModalRemoteAsset::register($this);
+
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Auction'), 'url' => ['/auction']];
 $this->params['breadcrumbs'][] = $this->title;
 
-$notSet = '<span class="not-set">'.Yii::t('app', 'Not Set').'</span>';
+$notSet = '<span class="not-set">' . Yii::t('app', 'Not Set') . '</span>';
 ?>
 
 <div class="auction-view">
@@ -52,8 +57,25 @@ $notSet = '<span class="not-set">'.Yii::t('app', 'Not Set').'</span>';
                 </div>
             </div>
             <div class="panel-footer">
-                <?= \yii\helpers\Html::a(Yii::t('app', 'Edit'), ['/auction/edit', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+                <div class="btn btn-group">
+                    <?php if ($model->status == \app\models\Item::STATUS_DRAFT) {
+                        echo \yii\helpers\Html::a(Yii::t('app', 'Selling'), ['/auction/sell', 'id' => $model->id], [
+                            'class' => 'btn btn-primary',
+                            'data-method' => false,
+                            'role' => 'modal-remote',
+                            'data-request-method' => 'POST',
+                            'data-toggle' => 'tooltip',
+                        ]);
+                        echo \yii\helpers\Html::a(Yii::t('app', 'Edit'), ['/auction/edit', 'id' => $model->id], ['class' => 'btn btn-primary']);
+                    }
+                    ?>
+                </div>
             </div>
         </div>
     </div>
 </div>
+<?php Modal::begin([
+    "id" => "ajaxCrudModal",
+    "footer" => "",// always need it for jquery plugin
+]) ?>
+<?php Modal::end(); ?>
