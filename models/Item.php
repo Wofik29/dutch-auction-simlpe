@@ -152,4 +152,26 @@ class Item extends \yii\db\ActiveRecord
         $this->status = self::STATUS_CLOSE;
         $this->save(false);
     }
+
+    public function buy()
+    {
+        if ($this->status == self::STATUS_SELLING) {
+            if ($this->seller_id == \Yii::$app->user->getId()) {
+                $this->addError('status', Yii::t('app', 'You can not buy your item'));
+                return false;
+            }
+            $this->status = self::STATUS_SOLD;
+            $this->end_price = $this->getCurrentPrice(true);
+            $this->buyer_id = \Yii::$app->user->getId();
+            $this->save(false);
+            return true;
+        } else {
+            if (in_array($this->status, [self::STATUS_SOLD, self::STATUS_CLOSE])) {
+                $this->addError('status', Yii::t('app', 'You can not buy unsold item'));
+                return false;
+            }
+            $this->addError('status', Yii::t('app', 'You can not buy unsold item'));
+            return false;
+        }
+    }
 }

@@ -147,6 +147,24 @@ class AuctionController extends BaseController
         return $this->goBack();
     }
 
+    public function actionBuy($id)
+    {
+        $model = Item::findOne($id);
+
+        if (!$model) {
+            throw new NotFoundHttpException(\Yii::t('app', 'Not Found Model!'));
+        }
+
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+        if ($model->buy()) {
+            \Yii::$app->session->addFlash('success', \Yii::t('app', 'Success Buy!'));
+            return $this->goBack();
+        } else {
+            throw new ForbiddenHttpException($model->getFirstError('status'));
+        }
+
+    }
+
     public function actionClose($id)
     {
         $model = Item::findOne($id);
