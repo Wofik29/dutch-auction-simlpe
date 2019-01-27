@@ -47,7 +47,7 @@ class AuctionController extends BaseController
                         'roles' => ['create_item'],
                         'allow' => true,
                     ], [
-                        'actions' => ['edit'],
+                        'actions' => ['update'],
                         'roles' => ['edit_item', 'edit_item_foreign'],
                         'allow' => true,
                     ], [
@@ -116,7 +116,7 @@ class AuctionController extends BaseController
         return $this->render('create', compact('model'));
     }
 
-    public function actionEdit($id)
+    public function actionUpdate($id)
     {
         $model = Item::findOne($id);
 
@@ -126,7 +126,7 @@ class AuctionController extends BaseController
 
         if (!in_array($model->status, [Item::STATUS_DRAFT, Item::STATUS_TEMPLATE])) {
             \Yii::$app->session->addFlash('warning', \Yii::t('app', 'Not allow edit no draft or no template'));
-            $this->goBack();
+            return $this->goBack();
         }
 
         if ($model->load(\Yii::$app->request->post()) && $model->validate()) {

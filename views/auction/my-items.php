@@ -77,7 +77,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                         'visibleButtons' => [
                             'view' => true,
-                            'edit' => function ($model, $key, $index) {
+                            'update' => function ($model, $key, $index) {
                                 return in_array($model['status'], [\app\models\Item::STATUS_DRAFT, \app\models\Item::STATUS_TEMPLATE]);
                             },
                             'delete' => function ($model, $key, $index) {
