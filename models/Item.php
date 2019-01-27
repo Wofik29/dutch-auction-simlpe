@@ -146,4 +146,10 @@ class Item extends \yii\db\ActiveRecord
 
         $this->save(false);
     }
+
+    public function close()
+    {
+        $this->status = self::STATUS_CLOSE;
+        $this->save(false);
+    }
 }
