@@ -5,7 +5,9 @@ namespace app\controllers;
 use app\components\BaseController;
 use app\models\Item;
 use app\models\ItemSearch;
+use yii\data\ArrayDataProvider;
 use yii\filters\AccessControl;
+use yii\grid\GridView;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
@@ -22,9 +24,14 @@ class AuctionController extends BaseController
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'actions' => ['index', 'view'],
+                        'actions' => ['index', 'view', 'updater'],
                         'roles' => ['@'],
                         'allow' => true,
+                    ], [
+                        'actions' => ['buy',],
+                        'roles' => ['client'],
+                        'allow' => true,
+                        'verbs' => ['POST'],
                     ], [
                         'actions' => ['sell',],
                         'roles' => ['create_item'],
@@ -157,6 +164,86 @@ class AuctionController extends BaseController
         } else {
             throw new ForbiddenHttpException($model->getFirstError('status'));
         }
+    }
+
+    public function actionUpdater()
+    {
+        ignore_user_abort(false);
+
+        $delay = 10;
+        $endTime = time() + $delay;
+
+        $ids = \Yii::$app->request->get('ids', []);
+        $toRemove = $ids;
+
+        /**
+         * Because request lock session file,
+         * another request same user will not pass, until this action is end
+         */
+        \Yii::$app->session->close();
+        while ($endTime > time()) {
+            $results = [];
+
+            /** @var Item[] $models */
+            $models = Item::findAll(['status' => Item::STATUS_SELLING]);
+            foreach ($models as $model) {
+                if (in_array($model->id, $ids)) {
+                    $keys = array_keys($toRemove);
+                    unset($toRemove[$keys[$model->id]]);
+
+                    /**
+                     * Check is finish time item
+                     */
+                    $isSell = $model->isSelling();
+                    if (!$isSell) {
+                        $results[] = [
+                            'id' => $model->id,
+                            'action' => 'drop',
+                        ];
+                    }
+                } else {
+                    $grid = new GridView([
+                        'dataProvider' => new ArrayDataProvider(['allModels' => [$model]]),
+                        'columns' => require \Yii::getAlias('@app/views/auction/_columns.php'),
+                    ]);
+
+                    $results[] = [
+                        'action' => 'new_item',
+                        'item' => [
+                            'id' => $model->id,
+                            'start_time' => $model->start_time,
+                            'start_price' => floatval($model->start_price),
+                            'step_time' => $model->step_time,
+                            'step_price' => floatval($model->step_price),
+                            'end_price' => $model->end_price,
+                            'current_price' => $model->currentPrice,
+                            'status' => $model->status,
+                        ],
+                        'html' => $grid->renderTableRow($model, $model->id,0),
+                    ];
+
+                }
+            }
+
+            if ($toRemove) {
+                foreach ($toRemove as $id) {
+                    $results[] = [
+                        'id' => $id,
+                        'action' => 'drop',
+                    ];
+                }
+            }
+
+            if ($results) {
+
+                break;
+            }
+
+            sleep(1);
+        }
+
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+        return $results;
     }
 
     public function actionBuy($id)

@@ -151,6 +151,20 @@ class Item extends \yii\db\ActiveRecord
         return false;
     }
 
+    public function isSelling()
+    {
+        if ($this->status == self::STATUS_SELLING) {
+            if ($this->end_time < time()) {
+                $this->close();
+                return false;
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
     public function close()
     {
         if ($this->status == self::STATUS_SELLING) {
