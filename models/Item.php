@@ -13,6 +13,7 @@ use Yii;
  * @property string $name
  * @property string $desc
  * @property int $start_time unix timestamp
+ * @property int $end_time unix timestamp
  * @property string $start_price
  * @property string $end_price
  * @property string $sell_price
