@@ -93,8 +93,12 @@ class Item extends \yii\db\ActiveRecord
                 case static::STATUS_SELLING:
                     $now = time();
                     $diff = $now - $this->start_time;
-                    $steps = $diff % $this->step_time;
-                    $this->_currentPrice = $this->start_price - ($steps * $this->step_price);
+                    $steps =  round($diff / ($this->step_time));
+                    $this->_currentPrice = round($this->start_price - ($steps * $this->step_price), 2);
+                    if ($this->_currentPrice < $this->end_price) {
+                        $this->_currentPrice = $this->end_price;
+                        $this->close();
+                    }
                     break;
                 default:
                     $this->_currentPrice = 0;
