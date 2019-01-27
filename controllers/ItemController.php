@@ -96,10 +96,10 @@ class ItemController extends BaseController
             throw new NotFoundHttpException(\Yii::t('app', 'Not Found Model'));
         }
 
-        $isBuy = $model->buyer_id != \Yii::$app->user->getId();
-        $isSell = $model->seller_id != \Yii::$app->user->getId();
+        $isSell = $model->seller_id == \Yii::$app->user->getId();
+        $isBuy = $model->buyer_id == \Yii::$app->user->getId();
 
-        if ($isBuy xor $isSell) {
+        if (!$isSell && !$isBuy || \Yii::$app->user->can('edit_item_foreign')) {
             throw new ForbiddenHttpException(\Yii::t('app', 'Forbidden'));
         }
 
