@@ -196,10 +196,17 @@ class Item extends \yii\db\ActiveRecord
                 return false;
             }
 
+            $transaction = Yii::$app->db->beginTransaction();
+
+            $user->account -= $currentPrice;
+            $user->save(false);
+
             $this->status = self::STATUS_SOLD;
             $this->sell_price = $currentPrice;
             $this->buyer_id = \Yii::$app->user->getId();
             $this->save(false);
+
+            $transaction->commit();
             return true;
         } else {
             if (in_array($this->status, [self::STATUS_SOLD, self::STATUS_CLOSE])) {
