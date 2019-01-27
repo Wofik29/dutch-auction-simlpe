@@ -65,10 +65,11 @@ class AuctionController extends BaseController
             $items[] = [
                 'id' => $model->id,
                 'start_time' => $model->start_time,
-                'start_price' => $model->start_price,
+                'start_price' => floatval($model->start_price),
                 'step_time' => $model->step_time,
-                'step_price' => $model->step_price,
+                'step_price' => floatval($model->step_price),
                 'end_price' => $model->end_price,
+                'current_price' => $model->currentPrice,
             ];
         }
 
