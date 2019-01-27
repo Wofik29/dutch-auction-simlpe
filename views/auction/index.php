@@ -13,6 +13,8 @@
  * @var $items array of models
  */
 
+use yii\bootstrap\Modal;
+\app\assets\ModalRemoteAsset::register($this);
 \app\assets\AuctionAsset::register($this);
 
 $this->title = Yii::t('app', 'Auction');
@@ -90,7 +92,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     $model['status'] == \app\models\Item::STATUS_SELLING;
                             },
                             'buy' => function ($model, $key, $index) {
-                                return !($model['seller_id'] == Yii::$app->user->getId());
+                                return !($model['seller_id'] == Yii::$app->user->getId()) && Yii::$app->user->can('client');
                             }
                         ]
                     ],
@@ -104,3 +106,8 @@ $this->params['breadcrumbs'][] = $this->title;
 <script>
     var items = <?= json_encode($items) ?>;
 </script>
+<?php Modal::begin([
+    "id" => "ajaxCrudModal",
+    "footer" => "",// always need it for jquery plugin
+]) ?>
+<?php Modal::end(); ?>
