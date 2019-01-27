@@ -44,7 +44,7 @@ class AuctionController extends BaseController
     {
         $searchModel = new ItemSearch();
         $params = \Yii::$app->request->queryParams;
-        $params['status'] = Item::STATUS_SELLING;
+        $params['ItemSearch']['status'] = Item::STATUS_SELLING;
 
         $dataProvider = $searchModel->search($params);
 
