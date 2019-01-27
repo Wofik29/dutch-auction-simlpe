@@ -16,6 +16,8 @@ return [
     'Username' => 'Логин',
     'Password' => 'Пароль',
     'RememberMe' => 'Запомнить меня',
+    'Account' => 'Счёт',
+    'Up Account' => 'Пополнить Счёт',
 
     'Auction' => 'Аукцион',
     'Selling' => 'Продажа',
@@ -37,6 +39,7 @@ return [
     'Step Time' => 'Шаг по времени',
     'Status' => 'Статус',
     'Start Sell' => 'Начало продажи',
+    'Sell Price' => 'Цена продажи',
 
     'Status Draft' => 'Черновик',
     'Status Template' => 'Шаблон',

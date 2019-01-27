@@ -14,6 +14,7 @@ use yii\web\IdentityInterface;
  * @property string $password
  * @property string $authKey
  * @property string $accessToken
+ * @property string $account
  *
  * @package app\models
  */
@@ -131,5 +132,11 @@ class User extends ActiveRecord implements IdentityInterface
     public function validatePassword($password)
     {
         return $hash = Yii::$app->security->validatePassword($password, $this->password);
+    }
+
+    public function upAccount($number)
+    {
+        $this->account += $number;
+        $this->save(false);
     }
 }
