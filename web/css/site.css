@@ -117,3 +117,7 @@ a.desc:after {
 .row {
     margin-bottom: 10px;
 }
+
+.table-striped > tbody > tr.price-update {
+    background-color: rgba(40, 255, 61, 0.31);
+}

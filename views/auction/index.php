@@ -10,7 +10,10 @@
  * @var $this \yii\web\View
  * @var $dataProvider \yii\data\ActiveDataProvider
  * @var $searchModel \app\models\ItemSearch
+ * @var $items array of models
  */
+
+\app\assets\AuctionAsset::register($this);
 
 $this->title = Yii::t('app', 'Auction');
 
@@ -32,6 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
             \yii\grid\GridView::widget([
                 'dataProvider' => $dataProvider,
                 'filterModel' => $searchModel,
+                'id' => 'auction-items',
                 'columns' => [
                     [
                         'attribute' => 'seller_id',
@@ -40,7 +44,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                     'name',
                     'start_price',
-                    'currentPrice',
+                    [
+                        'value' => 'currentPrice',
+                        'attribute' => 'currentPrice',
+                        'options' => ['data' => ['type' => 'current-price']],
+                        'headerOptions' => ['data' => ['type' => 'current-price']],
+                        'contentOptions' => ['data' => ['type' => 'current-price']],
+                    ],
                     [
                         'class' => \yii\grid\ActionColumn::class,
                     ],
@@ -50,3 +60,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 </div>
+
+<script>
+    var items = <?= json_encode($items) ?>;
+</script>

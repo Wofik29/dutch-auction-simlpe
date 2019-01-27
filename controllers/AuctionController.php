@@ -58,7 +58,22 @@ class AuctionController extends BaseController
 
         $dataProvider = $searchModel->search($params);
 
-        return $this->render('index', compact('dataProvider', 'searchModel'));
+        /** @var Item[] $models */
+        $models = $dataProvider->getModels();
+        $items = [];
+        foreach ($models as $model) {
+            $items[] = [
+                'id' => $model->id,
+                'start_time' => $model->start_time,
+                'start_price' => $model->start_price,
+                'step_time' => $model->step_time,
+                'step_price' => $model->step_price,
+                'end_price' => $model->end_price,
+            ];
+        }
+
+
+        return $this->render('index', compact('dataProvider', 'searchModel', 'items'));
     }
 
     public function actionMyItems()
@@ -70,8 +85,9 @@ class AuctionController extends BaseController
         }
 
         $dataProvider = $searchModel->search($params);
+        $items = $dataProvider->getModels();
 
-        return $this->render('my-items', compact('dataProvider', 'searchModel'));
+        return $this->render('my-items', compact('dataProvider', 'searchModel', 'items'));
 
     }
 
