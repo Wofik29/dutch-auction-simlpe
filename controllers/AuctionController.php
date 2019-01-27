@@ -219,7 +219,7 @@ class AuctionController extends BaseController
                             'current_price' => $model->currentPrice,
                             'status' => $model->status,
                         ],
-                        'html' => $grid->renderTableRow($model, $model->id,0),
+                        'html' => $grid->renderTableRow($model, $model->id, 0),
                     ];
 
                 }
@@ -262,7 +262,7 @@ class AuctionController extends BaseController
             $error = $model->getFirstError('status');
             return [
                 'title' => \Yii::t('app', 'Failure'),
-                'content' => '<div class="alert alert-warning">'. $error .'</div>',
+                'content' => '<div class="alert alert-warning">' . $error . '</div>',
             ];
         }
 
@@ -280,13 +280,13 @@ class AuctionController extends BaseController
         if ($model->close()) {
             return [
                 'title' => \Yii::t('app', 'Success'),
-                'content' => '<div class="alert alert-success">'.\Yii::t('app', 'Congrats!').' '.\Yii::t('app', 'Success Close!').'</div>',
+                'content' => '<div class="alert alert-success">' . \Yii::t('app', 'Congrats!') . ' ' . \Yii::t('app', 'Success Close!') . '</div>',
             ];
         } else {
             $error = $model->getFirstError('status');
             return [
                 'title' => \Yii::t('app', 'Failure'),
-                'content' => '<div class="alert alert-warning">'. $error .'</div>',
+                'content' => '<div class="alert alert-warning">' . $error . '</div>',
             ];
         }
     }
