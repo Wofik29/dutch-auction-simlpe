@@ -52,9 +52,9 @@ class Item extends \yii\db\ActiveRecord
     {
         return [
             [['seller_id', 'name', 'start_price', 'end_price', 'step_price', 'step_time', 'status'], 'required'],
-            [['seller_id', 'buyer_id', 'step_time', 'sell_price', 'status'], 'integer'],
+            [['seller_id', 'buyer_id', 'step_time', 'sell_price', 'status'], 'integer', 'min' => 1],
             [['desc'], 'string'],
-            [['start_price', 'end_price', 'step_price'], 'number'],
+            [['start_price', 'end_price', 'step_price'], 'number', 'min' => 1],
             [['name'], 'string', 'max' => 255],
             [['buyer_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['buyer_id' => 'id']],
             [['seller_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['seller_id' => 'id']],

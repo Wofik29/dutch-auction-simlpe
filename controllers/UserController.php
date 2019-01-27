@@ -53,8 +53,12 @@ class UserController extends BaseController
 
         if (Yii::$app->request->isPost) {
             $account = Yii::$app->request->post('account');
-            $model->upAccount($account);
-            Yii::$app->session->addFlash('success', Yii::t('app', 'Success!'));
+            if ($account > 0) {
+                $model->upAccount($account);
+                Yii::$app->session->addFlash('success', Yii::t('app', 'Success!'));
+            } else {
+                Yii::$app->session->addFlash('danger', Yii::t('app', 'May be greater than zero'));
+            }
         }
         return $this->render('edit', compact('model'));
     }

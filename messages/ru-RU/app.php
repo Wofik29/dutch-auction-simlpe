@@ -36,7 +36,7 @@ return [
     'End Price' => 'Конечная цена',
     'Current Price' => 'Текущая цена',
     'Step Price' => 'Шаг по цене',
-    'Step Time' => 'Шаг по времени',
+    'Step Time' => 'Шаг по времени (сек)',
     'Status' => 'Статус',
     'Start Sell' => 'Начало продажи',
     'Sell Price' => 'Цена продажи',
