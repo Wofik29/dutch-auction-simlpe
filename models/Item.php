@@ -180,12 +180,24 @@ class Item extends \yii\db\ActiveRecord
     public function buy()
     {
         if ($this->status == self::STATUS_SELLING) {
-            if ($this->seller_id == \Yii::$app->user->getId()) {
+            /** @var User $user */
+            $user = Yii::$app->user->identity;
+            if ($this->seller_id == $user->id) {
                 $this->addError('status', Yii::t('app', 'You can not buy your item'));
                 return false;
             }
+
+            $currentPrice = $this->getCurrentPrice(true);
+            if ($currentPrice > $user->account) {
+                $message = Yii::t('app', 'Not enough money'). '. <br>' .
+                    Yii::t('app', 'You have: ') . $user->account . ' <br>' .
+                    Yii::t('app', 'Item cost: ') . $currentPrice;
+                $this->addError('status', $message);
+                return false;
+            }
+
             $this->status = self::STATUS_SOLD;
-            $this->sell_price = $this->getCurrentPrice(true);
+            $this->sell_price = $currentPrice;
             $this->buyer_id = \Yii::$app->user->getId();
             $this->save(false);
             return true;
