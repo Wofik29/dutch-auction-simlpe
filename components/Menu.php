@@ -49,6 +49,7 @@ class Menu extends Component
 
         if (Yii::$app->user->can('profile_edit_foreign')) {
             $result[] = ['label' => Yii::t('app', 'Users'), 'url' => '/user'];
+            $auction['items'][] = ['label' => Yii::t('app', 'All Items'), 'url' => '/item'];
         }
 
         $result[] = $auction;

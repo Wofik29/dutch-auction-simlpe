@@ -23,6 +23,7 @@ return [
     'Selling' => 'Продажа',
     'Item' => 'Лот',
     'My Items' => 'Мои Лоты',
+    'All Items' => 'Все Лоты',
     'Buy History' => 'История покупок',
     'Sale History' => 'История продаж',
     'Users' => 'Пользователи',

@@ -29,12 +29,17 @@ class ItemController extends BaseController
                     [
                         'allow' => true,
                         'actions' => ['buy', 'view'],
-                        'roles' => ['client', 'edit_item_their'],
+                        'roles' => ['client', 'edit_item_foreign'],
                     ],
                     [
                         'allow' => true,
                         'actions' => ['sell', 'view'],
-                        'roles' => ['seller', 'edit_item_their'],
+                        'roles' => ['seller', 'edit_item_foreign'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['index'],
+                        'roles' => ['edit_item_foreign'],
                     ],
                     [
                         'allow' => false,
@@ -48,6 +53,17 @@ class ItemController extends BaseController
     /**
      * @return string
      */
+    public function actionIndex()
+    {
+        $searchModel = new ItemSearch();
+        $params = \Yii::$app->request->queryParams;
+
+        $dataProvider = $searchModel->search($params);
+        $type = 'buy';
+
+        return $this->render('history', compact('dataProvider', 'searchModel', 'type'));
+    }
+
     public function actionBuy()
     {
         $searchModel = new ItemSearch();
@@ -57,7 +73,7 @@ class ItemController extends BaseController
         $dataProvider = $searchModel->search($params);
         $type = 'buy';
 
-        return $this->render('index', compact('dataProvider', 'searchModel', 'type'));
+        return $this->render('history', compact('dataProvider', 'searchModel', 'type'));
     }
 
     public function actionSell()

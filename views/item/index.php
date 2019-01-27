@@ -13,7 +13,7 @@
  *
  */
 
-$this->title = Yii::t('app', 'Buy History');
+$this->title = Yii::t('app', 'All Items');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -25,7 +25,31 @@ $this->params['breadcrumbs'][] = $this->title;
                 'dataProvider' => $dataProvider,
                 'filterModel' => $searchModel,
                 'id' => 'auction-items',
-                'columns' => require __DIR__ . '/_columns.php',
+                'columns' => [
+                    [
+                        'attribute' => 'seller_id',
+                        'value' => 'seller.username',
+                        'filter' => \yii\helpers\ArrayHelper::map(\app\models\User::getSellers(), 'id', 'username'),
+                    ], [
+                        'attribute' => 'buyer_id',
+                        'value' => 'buyer.username',
+                        'filter' => \yii\helpers\ArrayHelper::map(\app\models\User::getClients(), 'id', 'username'),
+                    ],
+                    'name',
+                    [
+                        'attribute' => 'start_time',
+                        'format' => ['date', 'php:H:i:s d-m-Y '],
+                    ],
+                    'start_price',
+                    'sell_price',
+                    [
+                        'class' => \yii\grid\ActionColumn::class,
+                        'template' => '{view}',
+                        'buttonOptions' => [
+                            'class' => 'btn btn-default',
+                        ],
+                    ],
+                ]
             ])
             ?>
         </div>
